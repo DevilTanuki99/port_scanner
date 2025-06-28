@@ -1,1 +1,1 @@
-That's mini experiment make a tool usingg python sockets
+That's mini experiment make a tool using python sockets
