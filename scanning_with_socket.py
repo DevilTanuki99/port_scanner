@@ -1,4 +1,8 @@
 import socket
+import os
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def banner():
     print( 
@@ -11,45 +15,12 @@ def banner():
     f"| $$    |  $$$$$$| $$       |  $$$$/  |  $$$$$$|  $$$$$$|  $$$$$$| $$  | $| $$  | $|  $$$$$$| $$\n"      
     f"|__/     \______/|__/        \___/$$$$$\______/ \_______/\_______|__/  |__|__/  |__/\_______|__/\n"      
     f"                                |______/\n"
-    f"Create by: @DevilTanuki99\n"
+    f"\n{RED}Created by: Github ~ DevilTanuki99\n"
     )
 
-# fungsi untuk memindai 1 port tertentu
-def scan_port(ip, port):
-    try:
-        # Membuat socket TCP (AF_INET = IPv4, SOCK_STREAM = TCP)
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        # Menentukan waktu tunggu koneksi (timeout)
-        sock.settimeout(0.5)
-
-        # Mencoba menyambung ke alamat IP dan port
-        result = sock.connect_ex((ip, port))
-
-        # Menutup socket setelah digunakan
-        sock.close()
-
-        # Mengembalikan True jika port terbuka
-        return result == 0
-    except:
-        # Jika terjadi kesalahan (misalnya host tidak ditemukan), anggap port tertutup
-        return False
-
-GREEN = "\033[92m"
-DARK_GREEN = "\033[32m"
-RED = "\033[91m"
-CYAN = "\033[96m"
-RESET = "\033[0m"
-
-# main funcion
-def main():
-    print(f"{DARK_GREEN}")
-    banner()
-
-    # input alamat IP atau hostname
-    target = input("Input IP address or hostname: ")
-
-    print("\n+--------- PORT LIST ---------+\n"
+# Port List
+def port_list():
+    print(f"\n{GREEN}+--------- PORT LIST ---------+\n"
           "| 20 : FTP (Data Transfer)    +\n"
           "| 21 : FTP (Control)          +\n"
           "| 22 : SSH                    +\n"
@@ -72,11 +43,28 @@ def main():
           "+-----------------------------+\n"
           )
 
+# Port scanner function
+def scan_port(ip, port):
+    try:
+        # Making socket TCP (AF_INET = IPv4, SOCK_STREAM = TCP)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(0.5)
+        result = sock.connect_ex((ip, port))
+        sock.close()
+        return result == 0
+    except:
+        return False
+
+# Main scanner
+def main_scanner():
+    # input IP address or hostname
+    target = input(f"Input IP address or hostname: {RED}")
+
     # port list
     port_list = [20, 21, 22, 23, 25, 53, 68, 80, 110, 123, 143, 161, 443, 1433, 1521, 3306, 3389, 8080, 27017]
 
-    # menampilkan info scanning
-    print(f"Scanning {target} from port in list...\n")
+    # Displaying scanning info
+    print(f"{GREEN}Scanning {RED}{target}{GREEN} from port in list...\n")
 
     for port in port_list:
         if scan_port(target, port):
@@ -85,5 +73,24 @@ def main():
             print(f"{RED}[CLOSE❌] Port {port} Closed")
 
     print(f"\n{CYAN}Scanning complete!{RESET}")
+
+
+# Colors
+GREEN = "\033[92m"
+DARK_GREEN = "\033[32m"
+RED = "\033[91m"
+CYAN = "\033[96m"
+RESET = "\033[0m"
+
+
+# main funcion
+def main():
+    clear()
+    print(f"{DARK_GREEN}")
+    banner()
+    port_list()
+    main_scanner()
+    
+
 if __name__ == "__main__":
     main()
